@@ -9,7 +9,7 @@ ares-launch -H . -d MyTV
 ```
 ## Install the App
 ```bash
- ares-package .; ares-install --device MyTV .\com.hen3.istream_0.0.0_all.ip
+ ares-package .; ares-install --device MyTV .\com.hen3.istream_0.0.0_all.ipk
 ```
 ### Remove the App
 ```bash
