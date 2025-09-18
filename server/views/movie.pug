@@ -12,9 +12,9 @@ div.album.py-5.bg-body-tertiary
                 div.text-center.mt-2
                     button(onclick="fullscreen()")="Fullscreen"
                     each torrent, index in movie.torrents
-                        button(id=index onclick="stream("+index+", '"+movie.query_term+"')")=torrent.quality + " (" + torrent.peers + "/" + torrent.seeds + ")"
+                        button(id=index onclick='stream('+index+', "'+movie.query_term+'")')=torrent.quality + " (" + torrent.peers + "/" + torrent.seeds + ")"
                     if hdr_movie !== null
-                        button(onclick="stream(-1, '"+movie.query_term+"')")=hdr_movie.quality + " (" + hdr_movie.peers + "/" + hdr_movie.seeds + ")"
+                        button(onclick='stream(-1, "'+movie.query_term+'")')=hdr_movie.quality + " (" + hdr_movie.peers + "/" + hdr_movie.seeds + ")"
                 div.text-center.mt-2
                     p(id="progress")
 script(src="/js/bootstrap.bundle.min.js")
