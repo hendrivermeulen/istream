@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "nodemon index.js -e js,pug"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "1.12.2",
+    "cheerio": "1.1.2",
+    "clivas": "0.2.0",
+    "express": "5.1.0",
+    "nodemon": "3.1.10",
+    "pug": "3.0.3",
+    "range-parser": "1.2.1",
+    "torrent-stream": "1.2.1"
+  },
+  "type": "module"
+}

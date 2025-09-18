@@ -1,0 +1,21 @@
+include components/header
+div.album.py-5.bg-body-tertiary
+    div.container
+        div.row
+            div.col-md-3
+                div.card(style='width: 18rem; height: 31rem;')
+                    img.card-img-top(src=movie.image)
+                    div.card-body
+                        p.card-text= movie.title
+            div.col-md-9
+                video.w-100(controls style='width: 18rem;height: 31rem;' id="video")
+                div.text-center.mt-2
+                    button(onclick="fullscreen()")="Fullscreen"
+                    each torrent, index in movie.torrents
+                        button(id=index onclick="stream("+index+", '"+movie.query_term+"')")=torrent.quality + " (" + torrent.peers + "/" + torrent.seeds + ")"
+                    if hdr_movie !== null
+                        button(onclick="stream(-1, '"+movie.query_term+"')")=hdr_movie.quality + " (" + hdr_movie.peers + "/" + hdr_movie.seeds + ")"
+                div.text-center.mt-2
+                    p(id="progress")
+script(src="/js/bootstrap.bundle.min.js")
+script(src="/js/video.js")

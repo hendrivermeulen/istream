@@ -1,0 +1,15 @@
+include components/header
+div.album.py-5.bg-body-tertiary
+    div.container
+        div.row.row-cols-1.row-cols-sm-2.row-cols-md-5.g-3
+            each movie in movies
+                a.col.text-decoration-none(href=movie.url)
+                    div.card.shadow-sm(style='height: 28rem;')
+                        img.card-img-top(src=movie.image)
+                        div.card-body
+                            p.card-text= movie.title
+    div.text-center.mt-2
+        if hasMore
+            a.btn.btn-primary(href=((searchQuery) ? "?query="+searchQuery+"&" : "?") +
+            ((genre) ? "genre="+genre+"&" : "") + "page="+next_page) Next
+script(src="/js/bootstrap.bundle.min.js")

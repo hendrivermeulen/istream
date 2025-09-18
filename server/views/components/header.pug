@@ -1,0 +1,24 @@
+doctype html
+html(lang="en" data-bs-theme="dark")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title= title
+        link(rel="stylesheet" href="/css/bootstrap.min.css")
+    body
+        script(src="/js/remote.js")
+        header.py-3.border-bottom
+            div.container.d-flex.flex-wrap.justify-content-center
+                div.d-flex.align-items-center.mb-3.mb-lg-0.me-lg-auto.link-body-emphasis
+                    a.mb-lg-0.fs-4.text-white.text-decoration-none(href="/")= "iStream"
+                div.d-flex.align-items-center.mb-3.mb-lg-0.me-lg-auto.link-body-emphasis
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=28")= "Action"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=12")= "Adventure"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=35")= "Comedy"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=14")= "Fantasy"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=16")= "Animation"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=10749")= "Romance"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=18")= "SciFi"
+                    a.mb-lg-0.fs-8.text-white.text-decoration-none.m-1(href="/?genre=878")= "Drama"
+                form.col-12.col-lg-auto.mb-3.mb-lg-0(role="search" action="/search" method="GET")
+                    input.form-control(type="search" placeholder="Search" aria-label="Search" id="query" name="query" value=searchQuery)
