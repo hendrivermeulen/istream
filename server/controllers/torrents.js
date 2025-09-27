@@ -3,12 +3,12 @@ import { rm } from "fs/promises";
 import os from "os";
 import fs from "fs";
 import {get_movie_link} from "./apis/yts.js";
-import {get_movie_4k_hdr_link} from "./apis/piratebay.js";
+import {get_link} from "./apis/piratebay.js";
 import axios from "axios";
 import path from "path";
 
 const client = new WebTorrent({
-    maxConns: 1000
+    maxConns: 200
 });
 
 const downloadPath = path.join(os.tmpdir(), "torrents")
@@ -67,7 +67,7 @@ async function stream(link, response) {
         torrent.files.forEach(f => f.deselect());
         file.select();
 
-        tempFilePath = file.path;
+        tempFilePath = path.join(downloadPath, file.path);
 
         progressInterval = setInterval(() => {
             const percentageCompleted = (torrent.progress * 100).toFixed(2)
@@ -97,7 +97,7 @@ export async function pipe(response, title, torrentIndex) {
     let link, duration;
     if(isPirate) {
         [link, duration] = await get_movie_link(title, 0)
-        link = await get_movie_4k_hdr_link(title, index)
+        link = await get_link(title, index)
     } else {
         [link, duration] = await get_movie_link(title, index)
     }
@@ -105,18 +105,18 @@ export async function pipe(response, title, torrentIndex) {
 
     if(link === null){
         response.status(404).send('Not Found')
-    }
-
-    if(currentLink === undefined) {
-        await stream(link, response);
     } else {
-        if (currentLink !== link) {
-            clearInterval(progressInterval)
-            currentTorrent.destroy();
-            progress = defaultProgress
+        if (currentLink === undefined) {
             await stream(link, response);
         } else {
-            respond(response)
+            if (currentLink !== link) {
+                clearInterval(progressInterval)
+                currentTorrent.destroy();
+                progress = defaultProgress
+                await stream(link, response);
+            } else {
+                respond(response)
+            }
         }
     }
 }
