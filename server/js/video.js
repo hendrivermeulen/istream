@@ -46,7 +46,7 @@ video.addEventListener("error", e => {
 })
 
 video.addEventListener("play", e => {
-    started = true;
+    started = time > 0;
     if(timeChecker !== undefined){
         clearTimeout(timeChecker);
     }

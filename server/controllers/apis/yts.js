@@ -1,7 +1,15 @@
 import axios from "axios";
 
+let detailsCache = {}
+let linksCache = {}
+
 export async function get_movie_details(movie_name){
     const query_term = movie_name.replace(/\s/g, '+')
+
+    if(detailsCache[query_term]){
+        return detailsCache[query_term];
+    }
+
     const response = await
         axios.get('https://yts.mx/api/v2/list_movies.json?query_term='+query_term);
 
@@ -12,7 +20,7 @@ export async function get_movie_details(movie_name){
     const movie = data.movies[0];
 
     const src = "/stream?title="+query_term
-    return {
+    const result = {
         title: movie_name,
         query_term: query_term,
         id: movie.id,
@@ -21,10 +29,13 @@ export async function get_movie_details(movie_name){
         src: src,
         torrents: movie.torrents
     }
+
+    detailsCache[query_term] = result;
+    return result
 }
 
 export async function get_movies(query, page){
-    const query_term = query.replace(/\s/g, '+')
+    const query_term = (query == undefined) ? "" : query.replace(/\s/g, '+')
     const response = await
         axios.get('https://yts.mx/api/v2/list_movies.json?query_term='+query_term+"&page="+page+"&sort_by=download_count");
 
@@ -46,6 +57,12 @@ export async function get_movies(query, page){
 
 export async function get_movie_link(movie_name, index){
     const query_term = movie_name.replace(/\s/g, '+')
+
+    const query = query_term+index
+    if(linksCache[query]){
+        return linksCache[query];
+    }
+
     const response = await
         axios.get('https://yts.mx/api/v2/list_movies.json?query_term='+query_term);
 
@@ -56,5 +73,8 @@ export async function get_movie_link(movie_name, index){
     const movie = data.movies[0];
 
     const hash = movie.torrents[index].hash
-    return ["magnet:?xt=urn:btih:"+hash+"&dn="+query_term+"&tr=http://track.one:1234/announce&tr=udp://track.two:80", movie.runtime];
+    const result = ["magnet:?xt=urn:btih:"+hash+"&dn="+query_term+"&tr=http://track.one:1234/announce&tr=udp://track.two:80", movie.runtime];
+
+    linksCache[query] = result;
+    return result
 }

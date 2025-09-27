@@ -4,9 +4,7 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import {get_popular} from './controllers/apis/tmdb.js'
 import {get_movie_details, get_movies} from "./controllers/apis/yts.js";
-import os from "os";
-import fs from "fs";
-import {get_movie_4k_hdr_details, get_movie_4k_hdr_link} from "./controllers/apis/piratebay.js";
+import {get_pirate_search_results} from "./controllers/apis/piratebay.js";
 
 const app = express();
 const PORT = 3000;
@@ -43,13 +41,14 @@ app.get('/search', async (req, res) => {
 });
 
 app.get('/movie', async (req, res) => {
-    const movie_details = await get_movie_details(req.query.title);
-    const hdr_movie = await get_movie_4k_hdr_details(req.query.title)
+    const title = req.query.title.replace(":", "")
+    const movie_details = await get_movie_details(title);
+    const pirate_bay_results = await get_pirate_search_results(title)
     if(movie_details === null){
         res.status(404).render('404')
     } else {
         res.render("movie",
-            {title: movie_details.title, movie: movie_details, hdr_movie: hdr_movie});
+            {title: title, movie: movie_details, pirate_bay_results: pirate_bay_results});
     }
 });
 
@@ -64,13 +63,3 @@ app.get('/stream/progress', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
-
-// cleanup
-fs.readdir(os.tmpdir(), (err, files) => {
-    if(err === null){
-        const tempFiles = files.filter(file => file.startsWith('istream_'));
-        tempFiles.map(file =>
-            fs.unlink(path.join(os.tmpdir(), file), ()=>console.log("Deleted old file: " + file))
-        );
-    }
-})
